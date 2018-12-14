@@ -2,8 +2,8 @@ from collections import namedtuple
 
 
 class Pyrmission(object):
-    accessor = {} # The accessing-user
-    context = {} # Object of interest being accessed
+    accessor = None # The accessing-user
+    context = None # Object of interest being accessed
 
     def __init__(self, user, ooi, ruleset):
         assert isinstance(user, dict)
@@ -17,5 +17,8 @@ class Pyrmission(object):
 
 
     def is_allowed(self):
-        result = eval(self.access_control_rules, {}, self.__dict__)
-        return result
+        try:
+            return eval(self.access_control_rules, {}, self.__dict__)
+
+        except SyntaxError as e:
+            return False
